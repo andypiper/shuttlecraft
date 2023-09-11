@@ -11,7 +11,7 @@ import basicAuth from 'express-basic-auth';
 import moment from 'moment';
 import { ActivityPub } from './lib/ActivityPub.js';
 import { ensureAccount } from './lib/account.js';
-import { account, webfinger, inbox, outbox, admin, notes, publicFacing } from './routes/index.js';
+import { account, webfinger, inbox, outbox, admin, notes, publicFacing, nodeinfo } from './routes/index.js';
 
 // load process.env from .env file
 dotenv.config();
@@ -124,6 +124,10 @@ ensureAccount(USERNAME, DOMAIN).then(myaccount => {
   app.set('domain', DOMAIN);
   app.set('account', myaccount);
 
+  // support nodeinfo queries
+  app.use("/.well-known/nodeinfo", nodeinfo);
+  app.use("/nodeinfo/2.0", nodeinfo);
+
   // serve webfinger response
   app.use('/.well-known/webfinger', cors(), webfinger);
   // server user profile and follower list
@@ -147,7 +151,7 @@ ensureAccount(USERNAME, DOMAIN).then(myaccount => {
   );
   app.use('/', cors(), publicFacing);
   app.use('/', express.static('public/'));
-
+  
   http.createServer(app).listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
   });
