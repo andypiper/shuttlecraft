@@ -47,7 +47,7 @@ router.get("/", async function (req, res) {
           activeMonth: 1,
           activeHalfyear: 1
         },
-        localPosts: 1,
+        localPosts: 2,
       },
       openRegistrations: false,
       metadata: {}

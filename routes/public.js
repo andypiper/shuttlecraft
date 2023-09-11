@@ -126,7 +126,7 @@ router.get('/feed', async (req, res) => {
 
   const feed = new RSS({
     title: `${USERNAME}@${DOMAIN}`,
-    site_url: DOMAIN,
+    site_url: "https://" + DOMAIN, // fix for validation issue
     pubDate: posts[0].published
   });
 
